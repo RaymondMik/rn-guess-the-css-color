@@ -94,7 +94,7 @@ const GameScreen = ({
 
       setTimeout(() => {
          setCurrentRound(currentRound + 1);
-      }, 1250)      
+      }, 1000)      
    }
 
    const radioBackground = (value: any) => (value === currentSelection && value === currentColor[colorType] || value === currentSelection && value !== currentColor[colorType]) ? { backgroundColor: radioBgColor } : {};

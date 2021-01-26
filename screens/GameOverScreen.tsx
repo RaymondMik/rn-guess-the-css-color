@@ -28,8 +28,8 @@ const GameOverScreen = ({
       <GameView style={{ paddingTop: 35 }}>
          <Text style={styles.text}>You scored {correctAnswers} out of {maxGameRounds} {emoji}</Text>
          <View style={styles.answersContainer}>
-            {answers.map((answer: Answer) => (
-               <View style={styles.answerPreview}>
+            {answers.map((answer: Answer, i: number) => (
+               <View key={i} style={styles.answerPreview}>
                   <View style={{...styles.answerPreviewImage, backgroundColor: answer.hex}}/>
                   <View style={styles.answerPreviewTextContainer}>
                      <Text style={styles.answerPreviewText}>{answer.name}</Text>
