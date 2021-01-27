@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, View, Text } from 'react-native'
+import { Dimensions, StyleSheet, View, Text, FlatList } from 'react-native'
 import GameView from "../components/GameView";
 import CustomButton from "../components/CustomButton";
 import { Answer } from "../types";
@@ -25,31 +25,35 @@ const GameOverScreen = ({
    const emoji: string = correctAnswers > 8 ? "🏆" : correctAnswers < 5 ? "🤷🏼‍♀️" : "";
 
    return (
-      <GameView style={{ paddingTop: 35 }}>
-         <Text style={styles.text}>You scored {correctAnswers} out of {maxGameRounds} {emoji}</Text>
-         <View style={styles.answersContainer}>
-            {answers.map((answer: Answer, i: number) => (
-               <View key={i} style={styles.answerPreview}>
-                  <View style={{...styles.answerPreviewImage, backgroundColor: answer.hex}}/>
-                  <View style={styles.answerPreviewTextContainer}>
-                     <Text style={styles.answerPreviewText}>{answer.name}</Text>
-                     {answer.correct ? (
-                        <AntDesign name="checkcircle" size={24} color={Colors.green} />) : (
-                        <Entypo name="circle-with-minus" size={24} color={Colors.red}/>)}
+         <GameView style={{ paddingTop: 35 }}>
+            <Text style={styles.text}>You scored {correctAnswers} out of {maxGameRounds} {emoji}</Text>
+            <FlatList 
+               style={styles.answersContainer}
+               data={answers}
+               numColumns={2}
+               renderItem={(ItemData: any) => (
+                  <View style={styles.answerPreview}>
+                     <View style={{...styles.answerPreviewImage, backgroundColor: ItemData.item.hex}}/>
+                     <View style={styles.answerPreviewTextContainer}>
+                        <Text style={styles.answerPreviewText}>{ItemData.item.name}</Text>
+                        {ItemData.item.correct ? (
+                           <AntDesign name="checkcircle" size={24} color={Colors.green} />) : (
+                           <Entypo name="circle-with-minus" size={24} color={Colors.red}/>)}
+                     </View>
                   </View>
-               </View>
-            ))}
-         </View>
-         <CustomButton 
-            handleOnPress={() => {
-               setIsPlaying(false);
-               setIsGameOver(false);
-               setAnswers([]);
-            }}
-            text="Go back"
-            style={{ marginTop: 10, width: "50%" }}
-         />
-      </GameView>
+               )}>
+            </FlatList>
+            <CustomButton 
+               handleOnPress={() => {
+                  setIsPlaying(false);
+                  setIsGameOver(false);
+                  setAnswers([]);
+               }}
+               text="Go back"
+               style={{ marginTop: 10, width: "50%" }}
+            />
+         </GameView>
+
    );
 }
 
@@ -62,18 +66,14 @@ const styles = StyleSheet.create({
    },
    answersContainer: {
       flex: 1,
-      width: "90%",
-      flexDirection: "row",
-      flexWrap: "wrap",
-      alignItems: "center",
-      justifyContent: "space-between",
-      alignContent: "center",
+      width: "95%",
       backgroundColor: "#212121",
       paddingVertical: 10,
-      paddingHorizontal: 10
+      paddingHorizontal: 10,
    },
    answerPreview: { 
-      width: "45%", 
+      width: "45%",
+      marginLeft: "5%",
       marginBottom: 10, 
       backgroundColor: "#212121" 
    },
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
    },
    answerPreviewText: { 
       color: "white",
-      fontSize: 17,
+      fontSize: 18,
       marginRight: 10
    }
 });
